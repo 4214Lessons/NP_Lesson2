@@ -21,9 +21,25 @@ var count = 0;
 var msg = string.Empty;
 
 
+/*
 while (true)
 {
     count = listener.ReceiveFrom(buffer, ref remoteEP);
     msg = Encoding.Default.GetString(buffer, 0, count);
     Console.WriteLine($"{remoteEP} : {msg}");
+}
+*/
+
+
+
+
+while (true)
+{
+    var result = await listener.ReceiveFromAsync(new ArraySegment<byte>(buffer), 
+                                                 SocketFlags.None, 
+                                                 remoteEP);
+
+    count = result.ReceivedBytes;
+    msg = Encoding.Default.GetString(buffer, 0, count);
+    Console.WriteLine($"{result.RemoteEndPoint} : {msg}");
 }
